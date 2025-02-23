@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shadcn/dist/shadcn.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: monospace;
+            background-color: #1e1e1e;
+            color: #00ff00;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #terminal {
+            flex-grow: 1;
+            overflow-y: auto;
+            border: 1px solid #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 18px; /* Larger font size for messages */
+        }
+        #input {
+            width: 100%;
+            padding: 10px;
+            background-color: #1e1e1e;
+            color: #00ff00;
+            border: 1px solid #333;
+            font-size: 16px; /* Larger font size for input */
+        }
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Axion Terminal</h1>
+        <div id="terminal"></div>
+        <input type="text" id="input" placeholder="Type a command or message...">
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('input');
+
+        function addMessage(message) {
+            const p = document.createElement('p');
+            p.textContent = message;
+            terminal.appendChild(p);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        socket.on('chat-message', (data) => {
+            addMessage(`${data.user}: ${data.message}`);
+        });
+
+        socket.on('command-response', (response) => {
+            addMessage(response);
+        });
+
+        socket.on('user-list', (users) => {
+            addMessage(`Users online: ${users.map(u => u.name).join(', ')}`);
+        });
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const text = input.value.trim();
+                if (text.startsWith('/')) {
+                    socket.emit('command', text.slice(1));
+                } else {
+                    socket.emit('chat-message', text);
+                }
+                input.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

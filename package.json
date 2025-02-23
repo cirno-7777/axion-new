@@ -1,0 +1,20 @@
+{
+  "name": "axion",
+  "version": "1.0.0",
+  "description": "axion's chatroom",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cirno-7777/not-axion.git"
+  },
+  "author": "cirno-7777",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cirno-7777/not-axion/issues"
+  },
+  "homepage": "https://github.com/cirno-7777/not-axion#readme"
+}
