@@ -23,7 +23,9 @@
     "helmet": "^8.0.0",
     "http": "^0.0.1-security",
     "path": "^0.12.7",
+    "shadcn": "^2.4.0-canary.9",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "uuid": "^11.1.0"
   }
 }
